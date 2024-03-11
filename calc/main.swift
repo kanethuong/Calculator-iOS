@@ -23,3 +23,4 @@ let calculator = Calculator();
 let result = calculator.add(no1: 1, no2: 1);
 
 print(result)
+print("test")
