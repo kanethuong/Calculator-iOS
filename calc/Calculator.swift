@@ -12,6 +12,9 @@ class Calculator {
     
     /// For multi-step calculation, it's helpful to persist existing result
     var currentResult = 0;
+    var inputs:[Any]=[]
+    var numStack:[Int]=[]
+    var opStack:[String]=[]
     
     /// Perform Addition
     ///
@@ -23,15 +26,45 @@ class Calculator {
     ///
     /// - Warning: The result may yield Int overflow.
     /// - SeeAlso: https://developer.apple.com/documentation/swift/int/2884663-addingreportingoverflow
-    func add(no1: Int, no2: Int) -> Int {
-        return no1 + no2;
+    func mulDivMod(num1:Int, num2:Int, op:String){
+        if op=="x"{
+            numStack.append(num1*num2)
+        }else if op=="/"{
+            numStack.append(num1/num2)
+        }else if op=="%"{
+            numStack.append(num1%num2)
+        }
+    }
+    
+    func addMin(num1:Int, num2:Int, op:String){
+        if op=="+"{
+            numStack.append(num1+num2)
+        }else if op=="-"{
+            
+            numStack.append(num1-num2)
+        }
+    }
+    
+    func inputReader(){
+        var isOperated=false
+        for input in inputs{
+            if let op = input as? String{
+                opStack.append(op)
+                isOperated=(op=="+" || op=="-") ? false : true
+            }else if let num=input as? Int{
+                isOperated ? mulDivMod(num1: numStack.removeLast(), num2: num, op: opStack.removeLast()) :
+                numStack.append(num)
+            }
+        }
+        addMin(num1: <#T##Int#>, num2: <#T##Int#>, op: <#T##String#>)
+        
     }
     
     func calculate(args: [String]) -> String {
         // Todo: Calculate Result from the arguments. Replace dummyResult with your actual result;
-        let dummyResult = add(no1: 1, no2: 2);
         
-        let result = String(dummyResult);
-        return(result)
+        
+//        let result = String(dummyResult);
+//        return(result)
     }
 }
