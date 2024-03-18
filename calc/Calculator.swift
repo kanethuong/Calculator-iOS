@@ -12,31 +12,22 @@ class Calculator {
     
     /// For multi-step calculation, it's helpful to persist existing result
     var currentResult = 0;
-    var inputs:[String]=[]
+    var inputs:[Any]=[]
     var numStack:[Int]=[]
-    var opStack:[String]=[]
+    var opStack:[Character]=[]
     
-    /// Perform Addition
-    ///
-    /// - Author: Jacktator
-    /// - Parameters:
-    ///   - no1: First number
-    ///   - no2: Second number
-    /// - Returns: The addition result
-    ///
-    /// - Warning: The result may yield Int overflow.
-    /// - SeeAlso: https://developer.apple.com/documentation/swift/int/2884663-addingreportingoverflow
-    func mulDivMod(num1:Int, num2:Int, op:String){
+    
+    func mulDivMod(num1:Int, num2:Int, op:Character){
         if op=="x"{
             numStack.append(num1*num2)
         }else if op=="/"{
-            numStack.append(num1/num2)
+            numStack.append(num2/num1)
         }else if op=="%"{
-            numStack.append(num1%num2)
+            numStack.append(num2%num1)
         }
     }
     
-    func addMin(num1:Int, num2:Int, op:String){
+    func addMin(num1:Int, num2:Int, op:Character){
         if op=="+"{
             numStack.append(num1+num2)
         }else if op=="-"{
@@ -44,15 +35,18 @@ class Calculator {
         }
     }
     
-    func inputReader()->Int{
+    func calculate(args: [String]) -> String {
+        // Todo: Calculate Result from the arguments. Replace dummyResult with your actual result;
+        inputs=args
+        
         var isOperated=false
         for input in inputs{
-            if let num=Int(input.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()){
+            if let num=input as? Int{
                 isOperated ? mulDivMod(num1: numStack.removeLast(), num2: num, op: opStack.removeLast()) :
                 numStack.append(num)
-            }else{
-                opStack.append(input)
-                isOperated=(input=="+" || input=="-") ? false : true
+            }else if let op=input as? Character{
+                self.opStack.append(op)
+                isOperated=(op=="+" || op=="-") ? false : true
             }
         }
         while(!opStack.isEmpty){
@@ -60,14 +54,6 @@ class Calculator {
             let num2=numStack.removeLast()
             addMin(num1: num1, num2: num2, op: opStack.removeLast())
         }
-        return numStack.removeLast()
-        
-    }
-    
-    func calculate(args: [String]) -> String {
-        // Todo: Calculate Result from the arguments. Replace dummyResult with your actual result;
-        inputs=args
-        let result = String(inputReader());
-        return(result)
+        return String(numStack.removeLast())
     }
 }
