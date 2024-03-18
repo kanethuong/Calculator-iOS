@@ -12,7 +12,7 @@ class Calculator {
     
     /// For multi-step calculation, it's helpful to persist existing result
     var currentResult = 0;
-    var inputs:[Any]=[]
+    var inputs:[String]=[]
     var numStack:[Int]=[]
     var opStack:[String]=[]
     
@@ -40,31 +40,34 @@ class Calculator {
         if op=="+"{
             numStack.append(num1+num2)
         }else if op=="-"{
-            
-            numStack.append(num1-num2)
+            numStack.append(num2-num1)
         }
     }
     
-    func inputReader(){
+    func inputReader()->Int{
         var isOperated=false
         for input in inputs{
-            if let op = input as? String{
-                opStack.append(op)
-                isOperated=(op=="+" || op=="-") ? false : true
-            }else if let num=input as? Int{
+            if let num=Int(input.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()){
                 isOperated ? mulDivMod(num1: numStack.removeLast(), num2: num, op: opStack.removeLast()) :
                 numStack.append(num)
+            }else{
+                opStack.append(input)
+                isOperated=(input=="+" || input=="-") ? false : true
             }
         }
-        addMin(num1: <#T##Int#>, num2: <#T##Int#>, op: <#T##String#>)
+        while(!opStack.isEmpty){
+            let num1=numStack.removeLast()
+            let num2=numStack.removeLast()
+            addMin(num1: num1, num2: num2, op: opStack.removeLast())
+        }
+        return numStack.removeLast()
         
     }
     
     func calculate(args: [String]) -> String {
         // Todo: Calculate Result from the arguments. Replace dummyResult with your actual result;
-        
-        
-//        let result = String(dummyResult);
-//        return(result)
+        inputs=args
+        let result = String(inputReader());
+        return(result)
     }
 }
