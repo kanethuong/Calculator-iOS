@@ -35,7 +35,7 @@ class Calculator {
         }
     }
     
-    func calculate(args: [String]) -> String {
+    func calculate(args: [Any]) -> String {
         // Todo: Calculate Result from the arguments. Replace dummyResult with your actual result;
         inputs=args
         
