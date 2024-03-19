@@ -9,14 +9,27 @@
 import Foundation
 
 class Utility{
-//    static func getNumber(_ input:Character)->Int?{
-//        return Int(input.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()); <#default value#>
-//    }
-//    
-//    static func getOperator(_ input:Character)->String?{
-//        let operators=["+", "-", "x", "/", "%"]
-//        if(operators.contains(input)){
-//            return input;
-//        }
-//    }
+    static let operators: [Character]=["+","-","x","/","%"]
+    
+    static func isNumber(_ input:String)->Int?{
+        let num=Int(input) ?? nil
+        if num != nil{
+            return num
+        }
+        return nil
+    }
+    
+    static func isOperator(_ input:String)->Character?{
+        let op=Character(input)
+        if operators.contains(op){
+            return op
+        }
+        return nil
+    }
+    
+    static func exitWithError(_ message: String) -> Never {
+        print("Error: \(message)")
+        exit(EXIT_FAILURE)
+    }
+
 }

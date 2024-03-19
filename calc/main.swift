@@ -11,7 +11,8 @@ import Foundation
 var args = ProcessInfo.processInfo.arguments
 args.removeFirst() // remove the name of the program
 
-var normalizedArgs = Validation.validateArg(args)
+let val=Validation()
+var normalizedArgs = val.validateArg(args)
 // Initialize a Calculator object
 let calculator = Calculator();
 
